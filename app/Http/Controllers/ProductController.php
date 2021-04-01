@@ -75,7 +75,16 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response(json_encode(['success' => false, 'message' => 'Product with ID ' . $id . ' does not exists.']))->header('Content-Type', 'application/json');
+        }
+        ray($request->all());
+        $product->update($request->all());
+        return response(json_encode(['success' => true, 'item' => $product]))
+            ->header('Content-Type', 'application/json');
+
     }
 
     /**
@@ -86,6 +95,16 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        if (!$product) {
+            return response(json_encode(['success' => false, 'message' => 'Product with ID ' . $id . ' does not exixts.']))->header('Content-Type', 'application/json');
+        }
+
+        $product->destroy($id);
+        return response(json_endcode([
+            'success' => true,
+            'message' => 'Product deleted successfully',
+        ]))->header('Content-Type', 'application/json');
+
     }
 }
