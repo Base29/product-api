@@ -10,7 +10,6 @@ class UserController extends Controller
 {
     public function register(Request $request)
     {
-        ray($request->all());
 
         $fields = $request->validate([
             'name' => 'required|string',
@@ -32,8 +31,6 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        ray($request->all());
-        ray(config('APP_KEY'));
 
         $fields = $request->validate([
             'email' => 'required|email',
@@ -48,6 +45,14 @@ class UserController extends Controller
                 'message' => 'Invalid login credentials',
             ], 401);
         }
+
+        $token = $user->createToken(env('SANCTUM_SECRET_KEY'))->plainTextToken;
+
+        return response([
+            'success' => true,
+            'user' => $user,
+            'token' => $token,
+        ]);
 
     }
 }

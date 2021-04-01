@@ -24,9 +24,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/search/{name}', [ProductController::class, 'search']);
 Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
 
 // Protected Routes
-
 Route::middleware(['auth:sanctum'])
     ->group(function () {
         Route::post('/product', [ProductController::class, 'store']);
