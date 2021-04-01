@@ -44,7 +44,7 @@ class ProductController extends Controller
         $addProduct = Product::create($request->all());
 
         if ($addProduct) {
-            return response()->json([
+            return response([
                 'success' => true,
                 'item' => $addProduct,
             ]);
@@ -85,14 +85,14 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         if (!$product) {
-            return response()->json([
+            return response([
                 'success' => false,
                 'message' => 'Product with ID ' . $id . ' does not exists.',
             ]);
         }
         ray($request->all());
         $product->update($request->all());
-        return response()->json([
+        return response([
             'success' => true,
             'item' => $product,
         ]);
@@ -109,14 +109,14 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if (!$product) {
-            return response()->json([
+            return response([
                 'success' => false,
-                'message' => 'Product with ID ' . $id . ' does not exixts.',
+                'message' => 'Product with ID ' . $id . ' does not exists.',
             ]);
         }
 
         $product->destroy($id);
-        return response()->json([
+        return response([
             'success' => true,
             'message' => 'Product deleted successfully',
         ]);
@@ -127,13 +127,13 @@ class ProductController extends Controller
         $searchedProduct = Product::where('name', 'like', '%' . $name . '%')->get();
 
         if ($searchedProduct->count() === 0) {
-            return response()->json([
+            return response([
                 'success' => false,
                 'message' => 'No results found',
             ]);
         }
 
-        return response()->json([
+        return response([
             'success' => true,
             'count' => $searchedProduct->count(),
             'products' => $searchedProduct,
