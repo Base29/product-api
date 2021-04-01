@@ -14,7 +14,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        $products = Product::paginate(2);
+        return response([
+            'success' => true,
+            'products' => $products,
+        ]);
     }
 
     /**
