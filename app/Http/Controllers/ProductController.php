@@ -101,7 +101,7 @@ class ProductController extends Controller
         }
 
         $product->destroy($id);
-        return response(json_endcode([
+        return response(json_encode([
             'success' => true,
             'message' => 'Product deleted successfully',
         ]))->header('Content-Type', 'application/json');
