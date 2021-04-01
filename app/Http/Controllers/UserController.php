@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -48,10 +49,11 @@ class UserController extends Controller
 
         $token = $user->createToken(env('SANCTUM_SECRET_KEY'))->plainTextToken;
 
+        $userArr = Arr::add($user, 'token', $token);
+
         return response([
             'success' => true,
-            'user' => $user,
-            'token' => $token,
+            'user' => $userArr,
         ]);
 
     }
