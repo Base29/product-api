@@ -121,4 +121,22 @@ class ProductController extends Controller
             'message' => 'Product deleted successfully',
         ]);
     }
+
+    public function search($name)
+    {
+        $searchedProduct = Product::where('name', 'like', '%' . $name . '%')->get();
+
+        if ($searchedProduct->count() === 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No results found',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'count' => $searchedProduct->count(),
+            'products' => $searchedProduct,
+        ]);
+    }
 }
