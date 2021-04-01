@@ -41,7 +41,14 @@ class ProductController extends Controller
             'price' => 'required',
         ]);
 
-        return Product::create($request->all());
+        $addProduct = Product::create($request->all());
+
+        if ($addProduct) {
+            return response()->json([
+                'success' => true,
+                'item' => $addProduct,
+            ]);
+        }
     }
 
     /**
@@ -78,12 +85,17 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         if (!$product) {
-            return response(json_encode(['success' => false, 'message' => 'Product with ID ' . $id . ' does not exists.']))->header('Content-Type', 'application/json');
+            return response()->json([
+                'success' => false,
+                'message' => 'Product with ID ' . $id . ' does not exists.',
+            ]);
         }
         ray($request->all());
         $product->update($request->all());
-        return response(json_encode(['success' => true, 'item' => $product]))
-            ->header('Content-Type', 'application/json');
+        return response()->json([
+            'success' => true,
+            'item' => $product,
+        ]);
 
     }
 
@@ -97,14 +109,16 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if (!$product) {
-            return response(json_encode(['success' => false, 'message' => 'Product with ID ' . $id . ' does not exixts.']))->header('Content-Type', 'application/json');
+            return response()->json([
+                'success' => false,
+                'message' => 'Product with ID ' . $id . ' does not exixts.',
+            ]);
         }
 
         $product->destroy($id);
-        return response(json_encode([
+        return response()->json([
             'success' => true,
             'message' => 'Product deleted successfully',
-        ]))->header('Content-Type', 'application/json');
-
+        ]);
     }
 }
