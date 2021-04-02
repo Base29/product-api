@@ -119,7 +119,8 @@ class ProductController extends Controller
             ]);
         }
 
-        $product->destroy($id);
+        $this->authorize('delete', $product);
+        $product->delete();
         return response([
             'success' => true,
             'message' => 'Product deleted successfully',

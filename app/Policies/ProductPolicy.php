@@ -5,14 +5,17 @@ namespace App\Policies;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
 {
     use HandlesAuthorization;
 
-    public function delete(User $user, Product $product)
+    public function delete(User $user, $product)
     {
-        return $user->id === $product->user_id;
+
+        return $user->id === $product->user_id ? Response::allow()
+        : Response::deny('You do not own this product.');
     }
 
     public function update(User $user, Product $product)
