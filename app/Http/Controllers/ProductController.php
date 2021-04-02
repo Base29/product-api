@@ -45,7 +45,7 @@ class ProductController extends Controller
             'price' => 'required',
         ]);
 
-        $addProduct = Product::create($request->all());
+        $addProduct = $request->user()->products()->create($request->all());
 
         if ($addProduct) {
             return response([
