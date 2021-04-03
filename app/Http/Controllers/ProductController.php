@@ -86,6 +86,10 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $request->validate([
+            'price' => 'required',
+        ]);
         $product = Product::find($id);
 
         if (!$product) {
@@ -94,8 +98,15 @@ class ProductController extends Controller
                 'message' => 'Product with ID ' . $id . ' does not exists.',
             ]);
         }
-        ray($request->all());
-        $product->update($request->all());
+
+        if (!$product->ownedBy(auth()->user())) {
+            return response([
+                'success' => false,
+                'message' => 'You are not authorize to update this product',
+            ]);
+        }
+
+        $product->update($request->only('price'));
         return response([
             'success' => true,
             'item' => $product,
