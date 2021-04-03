@@ -119,7 +119,13 @@ class ProductController extends Controller
             ]);
         }
 
-        $this->authorize('delete', $product);
+        if (!$product->ownedBy(auth()->user())) {
+            return response([
+                'success' => false,
+                'message' => 'You do not own this product',
+            ]);
+        }
+
         $product->delete();
         return response([
             'success' => true,
